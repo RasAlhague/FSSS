@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 public class TrayIcon
 {
+    private java.awt.TrayIcon trayIcon;
+
     private TrayIcon() { }
 
     public static TrayIcon getInstance()
@@ -19,7 +21,6 @@ public class TrayIcon
 
     public void initialize()
     {
-        java.awt.TrayIcon trayIcon = null;
         if (SystemTray.isSupported())
         {
             // get the SystemTray instance
@@ -38,11 +39,9 @@ public class TrayIcon
             PopupMenu popup = new PopupMenu();
 
             // create menu item for the default action
-            MenuItem defaultItem = new MenuItem("Exit");
-            defaultItem.addActionListener(exitListener);
-            popup.add(defaultItem);
-
-            /// ... add other items
+            MenuItem exitMenuItem = new MenuItem("Exit");
+            exitMenuItem.addActionListener(exitListener);
+            popup.add(exitMenuItem);
 
             // construct a TrayIcon
             trayIcon = new java.awt.TrayIcon(image, "FSSS", popup);
@@ -66,5 +65,18 @@ public class TrayIcon
             // disable tray option in your application or
             // perform other actions
         }
+    }
+
+    public void initCheckButton(Action action)
+    {
+
+        ActionListener checkListener = e -> {
+
+            action.perform();
+        };
+
+        MenuItem checkMenuItem = new MenuItem("Check");
+        checkMenuItem.addActionListener(checkListener);
+        trayIcon.getPopupMenu().add(checkMenuItem);
     }
 }

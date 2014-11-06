@@ -12,7 +12,6 @@ import java.util.*;
 public class SeriesChecker
 {
     Timer timer;
-    int i = 0;
     private int                           checkPeriodSec                   = 3600;
     private List<NewSeriesAvailableEvent> NewSeriesAvailableEventObservers = new ArrayList<NewSeriesAvailableEvent>();
 
@@ -46,7 +45,7 @@ public class SeriesChecker
         this.checkPeriodSec = checkPeriodSec;
     }
 
-    public void check()
+    public synchronized void check()
     {
         //get saved series
         HashMap<String, ArrayList<String>> SavedSeriesList = ConfigurationManager.getInstance()
