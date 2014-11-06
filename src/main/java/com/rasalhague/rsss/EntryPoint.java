@@ -7,12 +7,22 @@ public class EntryPoint
 {
     public static void main(String[] args)
     {
-        int checkPeriodSec = 0;
+        int checkPeriodSec;
 
-        if (args.length == 1)
+        try
         {
             checkPeriodSec = Integer.parseInt(args[0]);
+
+            if (checkPeriodSec < 10)
+            {
+                throw new NumberFormatException();
+            }
         }
+        catch (NumberFormatException | ArrayIndexOutOfBoundsException e)
+        {
+            checkPeriodSec = 3600;
+        }
+
         System.out.println(checkPeriodSec);
 
         TrayIcon.getInstance().initialize();
@@ -27,7 +37,7 @@ public class EntryPoint
 //        configurationManager.saveConfig(configuration);
 
         SeriesChecker seriesChecker = new SeriesChecker();
-        seriesChecker.setCheckPeriodSec((checkPeriodSec == 0) ? 3600 : checkPeriodSec);
+        seriesChecker.setCheckPeriodSec(checkPeriodSec);
         seriesChecker.addNewSeriesAvailableEvent((localSeriesMap, actualSeriesMap, diff) -> {
 
             configurationManager.saveConfig(new ConfigurationHolder(actualSeriesMap));
