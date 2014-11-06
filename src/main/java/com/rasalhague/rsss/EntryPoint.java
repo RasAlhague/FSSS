@@ -7,6 +7,8 @@ public class EntryPoint
 {
     public static void main(String[] args)
     {
+        TrayIcon.getInstance().initialize();
+
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
 //        ConfigurationHolder configuration = configurationManager.loadConfig();
