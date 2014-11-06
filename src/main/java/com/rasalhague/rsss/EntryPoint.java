@@ -21,12 +21,16 @@ public class EntryPoint
         SeriesChecker seriesChecker = new SeriesChecker();
         seriesChecker.setCheckPeriodSec(5);
         seriesChecker.addNewSeriesAvailableEvent((localSeriesMap, actualSeriesMap, diff) -> {
+
             configurationManager.saveConfig(new ConfigurationHolder(actualSeriesMap));
             System.out.println("diff:   ");
-            System.out.println(diff);
-            System.out.println();
+//            System.out.println(diff);
             System.out.println();
         });
         seriesChecker.startChecking();
+
+        Notifier notifier = new Notifier();
+
+        seriesChecker.addNewSeriesAvailableEvent(notifier);
     }
 }

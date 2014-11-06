@@ -7,6 +7,22 @@ repositories {
     mavenCentral()
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Version': version,
+                'Main-Class': 'com.rasalhague.rsss.EntryPoint'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.rasalhague.rsss.EntryPoint'
+    }
+}
+
 dependencies {
 //    testCompile group: 'junit', name: 'junit', version: '4.11'
 

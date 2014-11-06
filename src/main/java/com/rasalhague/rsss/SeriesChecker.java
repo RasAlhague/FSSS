@@ -93,6 +93,8 @@ public class SeriesChecker
                 ArrayList<String> savedSeries = savedSeriesList.get(fileURL);
                 ArrayList<String> actualSeries = downloadedActualSeries.get(fileURL);
 
+                if (savedSeries == null) savedSeries = new ArrayList<>();
+
                 if (actualSeries.size() > savedSeries.size())
                 {
                     isHaveChanges = true;
