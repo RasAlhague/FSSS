@@ -1,11 +1,16 @@
 package com.rasalhague.rsss;
 
+import tray.SystemTrayAdapter;
+import tray.SystemTrayProvider;
+import tray.TrayIconAdapter;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class TrayIcon
 {
-    private java.awt.TrayIcon trayIcon;
+    private PopupMenu popupMenu;
 
     private TrayIcon() { }
 
@@ -14,51 +19,31 @@ public class TrayIcon
         return TrayIconHolder.instance;
     }
 
-    private static class TrayIconHolder
-    {
-        static TrayIcon instance = new TrayIcon();
-    }
-
-    public void initialize()
+    public void initialize(ActionListener updBntAction)
     {
         if (SystemTray.isSupported())
         {
-            // get the SystemTray instance
-            SystemTray tray = SystemTray.getSystemTray();
+            SystemTrayAdapter trayAdapter = new SystemTrayProvider().getSystemTray();
+            URL imageUrl = getClass().getResource("/FS.png");
+            String tooltip = "";
+
+            // create a popup menu
+            popupMenu = new PopupMenu();
+
+            // create menu item for the default action
+            MenuItem exitMenuItem = new MenuItem("Exit");
+            exitMenuItem.addActionListener(e -> System.exit(0));
+            popupMenu.add(exitMenuItem);
+
+            MenuItem checkMenuItem = new MenuItem("Check");
+            checkMenuItem.addActionListener(updBntAction);
+            popupMenu.add(checkMenuItem);
+
             // load an image
             Image image = Toolkit.getDefaultToolkit()
                                  .getImage(TrayIcon.class.getResource("/FS.png"));
 
-            // create a action listener to listen for default action executed on the tray icon
-            ActionListener exitListener = e -> {
-
-                System.exit(0);
-            };
-
-            // create a popup menu
-            PopupMenu popup = new PopupMenu();
-
-            // create menu item for the default action
-            MenuItem exitMenuItem = new MenuItem("Exit");
-            exitMenuItem.addActionListener(exitListener);
-            popup.add(exitMenuItem);
-
-            // construct a TrayIcon
-            trayIcon = new java.awt.TrayIcon(image, "FSSS", popup);
-            trayIcon.setImageAutoSize(true);
-
-            // set the TrayIcon properties
-//            trayIcon.addActionListener(listener);
-
-            // add the tray image
-            try
-            {
-                tray.add(trayIcon);
-            }
-            catch (AWTException e)
-            {
-                System.err.println(e);
-            }
+            TrayIconAdapter trayIconAdapter = trayAdapter.createAndAddTrayIcon(imageUrl, tooltip, popupMenu);
         }
         else
         {
@@ -67,16 +52,8 @@ public class TrayIcon
         }
     }
 
-    public void initCheckButton(Action action)
+    private static class TrayIconHolder
     {
-
-        ActionListener checkListener = e -> {
-
-            action.perform();
-        };
-
-        MenuItem checkMenuItem = new MenuItem("Check");
-        checkMenuItem.addActionListener(checkListener);
-        trayIcon.getPopupMenu().add(checkMenuItem);
+        static TrayIcon instance = new TrayIcon();
     }
 }

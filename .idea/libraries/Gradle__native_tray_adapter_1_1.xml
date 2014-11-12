@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: native-tray-adapter-1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.taksan/native-tray-adapter/1.1/7e6a3cc0251893d36bc6a98dfba49f11a32ae0a2/native-tray-adapter-1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.taksan/native-tray-adapter/1.1/2cd42c5c85491d21519597489715c36af5dde98/native-tray-adapter-1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

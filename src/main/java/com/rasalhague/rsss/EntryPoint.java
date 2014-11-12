@@ -1,6 +1,5 @@
 package com.rasalhague.rsss;
 
-import com.rasalhague.rsss.configuration.ConfigurationHolder;
 import com.rasalhague.rsss.configuration.ConfigurationManager;
 
 public class EntryPoint
@@ -23,19 +22,15 @@ public class EntryPoint
             checkPeriodSec = 3600;
         }
 
-        TrayIcon.getInstance().initialize();
 
         ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
         SeriesChecker seriesChecker = new SeriesChecker();
         seriesChecker.setCheckPeriodSec(checkPeriodSec);
-        seriesChecker.addNewSeriesAvailableEvent((localSeriesMap, actualSeriesMap, diff) -> {
-
-            configurationManager.saveConfig(new ConfigurationHolder(actualSeriesMap));
-        });
+        seriesChecker.addNewSeriesAvailableEvent(new ConfigurationSaver());
         seriesChecker.addNewSeriesAvailableEvent(new Notifier());
         seriesChecker.startChecking();
 
-        TrayIcon.getInstance().initCheckButton(seriesChecker::check);
+        TrayIcon.getInstance().initialize(e -> seriesChecker.check());
     }
 }
